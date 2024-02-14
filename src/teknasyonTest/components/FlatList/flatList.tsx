@@ -1,13 +1,14 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { RenderPaginationButtons } from "./paginateButtons";
+import { PaginationButtons } from "./paginateButtons";
 type FLatlistProps = {
-  data: { userId: number; id: number; title: string }[];
+  data: { label: string; width: number }[][];
+  header?: { label: string; width: number }[];
   pageNumber: number;
   onCellClick?: (id: number) => void;
   onPageChange: (page: number) => void;
 };
-export const FlatListAlbumComponent = (props: FLatlistProps) => {
+export const FlatListComponent = (props: FLatlistProps) => {
   return (
     <View style={styles.wrapper}>
       {/* Table Container */}
@@ -15,42 +16,40 @@ export const FlatListAlbumComponent = (props: FLatlistProps) => {
         {/* Table Head */}
         <FlatList
           data={props.data.slice((props.pageNumber - 1) * 25, props.pageNumber * 25)}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => `${item[0].label}_${index}`}
           ListHeaderComponent={
-            <View style={styles.table_head}>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.table_head_captions}>ID</Text>
+            <>
+              <View style={styles.table_head}>
+                {props.header?.map((i) => {
+                  return (
+                    <View style={{ width: `${i.width}%` }} key={i.label}>
+                      <Text style={styles.table_head_captions}>{i.label}</Text>
+                    </View>
+                  );
+                })}
               </View>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.table_head_captions}>UserID</Text>
-              </View>
-              <View style={{ width: "45%" }}>
-                <Text style={styles.table_head_captions}>Title</Text>
-              </View>
-            </View>
+            </>
           }
           renderItem={({ item }: { item: FLatlistProps["data"][0] }) => (
-            <TouchableOpacity style={styles.table_body_single_row}>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.table_data}>{item.id}</Text>
-              </View>
-              <View style={{ width: "20%" }}>
-                <Text style={styles.table_data}>{item.userId}</Text>
-              </View>
-              <View style={{ width: "60%" }}>
-                <Text style={styles.table_data}>{item.title}</Text>
-              </View>
+            <TouchableOpacity style={styles.table_body_single_row} key={item[0].label}>
+              {item.map((i, index) => {
+                return (
+                  <View style={{ width: `${i.width}%` }} key={`${i.label}_${i.width}_${index}`}>
+                    <Text style={styles.table_data}>{i.label}</Text>
+                  </View>
+                );
+              })}
             </TouchableOpacity>
           )}
           ListFooterComponent={
             <View style={styles.paginate}>
-              <RenderPaginationButtons
+              <PaginationButtons
                 currentPage={props.pageNumber}
                 totalPages={Math.ceil(props.data.length / 25)}
                 handlePageClick={(page) => {
                   props.onPageChange(page);
                 }}
-              ></RenderPaginationButtons>
+              ></PaginationButtons>
             </View>
           }
         />

@@ -5,7 +5,7 @@ type PaginationButtonsProps = {
   totalPages: number;
   handlePageClick: (page: number) => void;
 };
-export const RenderPaginationButtons = (props: PaginationButtonsProps) => {
+export const PaginationButtons = (props: PaginationButtonsProps) => {
   const maxButtonsToShow = 3;
   let startPage = Math.max(1, props.currentPage - Math.floor(maxButtonsToShow / 2));
   let endPage = Math.min(props.totalPages, startPage + maxButtonsToShow - 1);
