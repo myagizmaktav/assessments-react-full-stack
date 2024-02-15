@@ -1,3 +1,18 @@
+### How To Start This Test 
+How to Work Test Project?
+
+
+- Install Android Studio and Craete VM Mobile Phone
+- Open BASH terminal 
+- Paste this code
+- `sudo git clone https://github.com/myagizmaktav/assessments-react-full-stack.git && cd assessments-react-full-stack && cd src && cd teknasyonTest && sudo npm i`
+- Then open VM Mobile on android studio.
+- Then Write This Code `npx expo start -c`
+- Volla!
+
+
+
+
 # React Full-Stack Assessment
 
 This repository contains an assessment task which is designed to evaluate candidates in the job application process and to help us assess the approaches and abilities of participants.

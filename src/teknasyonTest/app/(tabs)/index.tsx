@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { useGeneralService } from "@/services/useGeneral";
 import { FlatListComponent } from "@/components/FlatList/flatList";
 import { router } from "expo-router";
+import { Albums } from "@/types/album";
 export default function Index() {
   const [albums, setAlbums] = useGeneralService("albumsList");
   const [pageNumber, setPageNumber] = useGeneralService("albumsPage");
+  const [album, setAlbum] = useGeneralService("album");
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/albums/")
       .then((res) => res.json())
@@ -40,6 +42,7 @@ export default function Index() {
         onCellClick={(item) => {
           console.log(item);
           router.replace(`/(tabs)/albums/${item}`);
+          setAlbum(albums.find((i) => i?.id === item) as Albums);
         }}
         pageNumber={pageNumber}
         onPageChange={setPageNumber}

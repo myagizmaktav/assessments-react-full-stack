@@ -1,15 +1,19 @@
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
-import { useGeneralService } from "@/services/useGeneral";
+import { useGeneralService, useGeneralServiceValue } from "@/services/useGeneral";
 import { FlatListComponent } from "@/components/FlatList/flatList";
 import { CreateSvg } from "@/components/svg/createSvg";
 import { router } from "expo-router";
-export default function AlbumPhotos() {
+import { AlbumPhotos } from "@/types/albumPhotos";
+export default function AlbumPhotoList() {
   const { albumId } = useLocalSearchParams();
   const [photos, setPhotos] = useGeneralService("albumPhotos");
   const [pageNumber, setPageNumber] = useGeneralService("albumPhotosPage");
+  const [search, setSearch] = useGeneralService("albumSearchText");
+  const albumData = useGeneralServiceValue("album");
+  const [photo, setPhoto] = useGeneralService("albumPhoto");
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
       .then((res) => res.json())
@@ -19,8 +23,20 @@ export default function AlbumPhotos() {
   }, [albumId]);
   return (
     <View style={styles.container}>
+      <View>
+        <Text>Album Title: {albumData.title}</Text>
+        <Text>Album User ID: {albumData.userId}</Text>
+        <Text>Find Photo With Title:</Text>
+        <TextInput
+          style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
+          onChangeText={(text) => {
+            setSearch(text);
+          }}
+        />
+      </View>
       <FlatListComponent
         data={photos
+          .filter((item) => (search ? item.title.includes(search) : true))
           .map((item) => {
             const array = [];
             array.push({ label: <Text>{item.id.toString()}</Text>, width: 15, key: item.id.toString() });
@@ -53,6 +69,7 @@ export default function AlbumPhotos() {
         onCellClick={(item) => {
           console.log(item);
           router.replace(`/(tabs)/albums/${albumId}/${item}`);
+          setPhoto(photos.find((i) => i?.id === item) as AlbumPhotos);
         }}
         pageNumber={pageNumber}
         onPageChange={setPageNumber}

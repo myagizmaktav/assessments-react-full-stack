@@ -23,6 +23,15 @@ export class GeneralService {
     this.ServiceEventEmitter.emit("albumsList", value);
   }
 
+  private _album: Albums = {} as Albums;
+  public get album() {
+    return this._album;
+  }
+  public set album(value) {
+    this._album = value;
+    this.ServiceEventEmitter.emit("album", value);
+  }
+
   private _albumsPage: number = 1;
   public get albumsPage() {
     return this._albumsPage;
@@ -39,6 +48,15 @@ export class GeneralService {
   public set albumPhotos(value) {
     this._albumPhotos = value;
     this.ServiceEventEmitter.emit("albumPhotos", value);
+  }
+
+  private _albumPhoto: AlbumPhotos = {} as AlbumPhotos;
+  public get albumPhoto() {
+    return this._albumPhoto;
+  }
+  public set albumPhoto(value) {
+    this._albumPhoto = value;
+    this.ServiceEventEmitter.emit("albumPhoto", value);
   }
 
   private _albumPhotosPage: number = 1;
@@ -66,5 +84,14 @@ export class GeneralService {
   public set commentsPage(value) {
     this._commentsPage = value;
     this.ServiceEventEmitter.emit("commentsPage", value);
+  }
+
+  private _albumSearchText: string = "";
+  public get albumSearchText() {
+    return this._albumSearchText;
+  }
+  public set albumSearchText(value) {
+    this._albumSearchText = value;
+    this.ServiceEventEmitter.emit("albumSearchText", value);
   }
 }
