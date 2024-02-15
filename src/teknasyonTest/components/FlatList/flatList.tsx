@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { PaginationButtons } from "./paginateButtons";
 type FLatlistProps = {
-  data: { label: string; width: number }[][];
+  data: { label: string | JSX.Element; width: number; key: string }[][];
   header?: { label: string; width: number }[];
   pageNumber: number;
   onCellClick?: (id: number) => void;
@@ -16,14 +16,14 @@ export const FlatListComponent = (props: FLatlistProps) => {
         {/* Table Head */}
         <FlatList
           data={props.data.slice((props.pageNumber - 1) * 25, props.pageNumber * 25)}
-          keyExtractor={(item, index) => `${item[0].label}_${index}`}
+          keyExtractor={(item, index) => `${item[0].key}_${index}`}
           ListHeaderComponent={
             <>
               <View style={styles.table_head}>
                 {props.header?.map((i) => {
                   return (
                     <View style={{ width: `${i.width}%` }} key={i.label}>
-                      <Text style={styles.table_head_captions}>{i.label}</Text>
+                      <Text style={styles.title}>{i.label}</Text>
                     </View>
                   );
                 })}
@@ -31,11 +31,17 @@ export const FlatListComponent = (props: FLatlistProps) => {
             </>
           }
           renderItem={({ item }: { item: FLatlistProps["data"][0] }) => (
-            <TouchableOpacity style={styles.table_body_single_row} key={item[0].label}>
+            <TouchableOpacity
+              style={styles.table_body_single_row}
+              key={item[0].key as string}
+              onPress={() => {
+                if (props.onCellClick) props.onCellClick(Number(item[0].key));
+              }}
+            >
               {item.map((i, index) => {
                 return (
-                  <View style={{ width: `${i.width}%` }} key={`${i.label}_${i.width}_${index}`}>
-                    <Text style={styles.table_data}>{i.label}</Text>
+                  <View style={{ width: `${i.width}%` }} key={`${i.key}_${i.width}_${index}`}>
+                    {i.label}
                   </View>
                 );
               })}
@@ -76,8 +82,9 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
+    color: "white",
   },
   separator: {
     marginVertical: 30,
@@ -97,10 +104,6 @@ const styles = StyleSheet.create({
     padding: 7,
     backgroundColor: "#000",
   },
-  table_head_captions: {
-    fontSize: 15,
-    color: "white",
-  },
 
   table_body_single_row: {
     backgroundColor: "#fff",
@@ -108,8 +111,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#ddd",
     padding: 7,
-  },
-  table_data: {
-    fontSize: 11,
   },
 });

@@ -1,6 +1,8 @@
 /* eslint-disable no-use-before-define */
 import { Albums } from "@/types/album";
 import { ServiceEventEmitter } from "../utils/eventEmitter/event.emitter";
+import { AlbumPhotos } from "@/types/albumPhotos";
+import { PhotoComments } from "../types/photoComments";
 
 export class GeneralService {
   static instance: GeneralService;
@@ -28,5 +30,41 @@ export class GeneralService {
   public set albumsPage(value) {
     this._albumsPage = value;
     this.ServiceEventEmitter.emit("albumsPage", value);
+  }
+
+  private _albumPhotos: AlbumPhotos[] = [];
+  public get albumPhotos() {
+    return this._albumPhotos;
+  }
+  public set albumPhotos(value) {
+    this._albumPhotos = value;
+    this.ServiceEventEmitter.emit("albumPhotos", value);
+  }
+
+  private _albumPhotosPage: number = 1;
+  public get albumPhotosPage() {
+    return this._albumPhotosPage;
+  }
+  public set albumPhotosPage(value) {
+    this._albumPhotosPage = value;
+    this.ServiceEventEmitter.emit("albumPhotosPage", value);
+  }
+
+  private _comments: PhotoComments[] = [];
+  public get comments() {
+    return this._comments;
+  }
+  public set comments(value) {
+    this._comments = value;
+    this.ServiceEventEmitter.emit("comments", value);
+  }
+
+  private _commentsPage: number = 1;
+  public get commentsPage() {
+    return this._commentsPage;
+  }
+  public set commentsPage(value) {
+    this._commentsPage = value;
+    this.ServiceEventEmitter.emit("commentsPage", value);
   }
 }
