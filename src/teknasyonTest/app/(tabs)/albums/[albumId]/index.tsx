@@ -23,7 +23,7 @@ export default function AlbumPhotoList() {
   }, [albumId]);
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ padding: 5 }}>
         <Text>Album Title: {albumData.title}</Text>
         <Text>Album User ID: {albumData.userId}</Text>
         <Text>Find Photo With Title:</Text>
@@ -67,7 +67,6 @@ export default function AlbumPhotoList() {
           { label: "Title", width: 25 },
         ]}
         onCellClick={(item) => {
-          console.log(item);
           router.replace(`/(tabs)/albums/${albumId}/${item}`);
           setPhoto(photos.find((i) => i?.id === item) as AlbumPhotos);
         }}

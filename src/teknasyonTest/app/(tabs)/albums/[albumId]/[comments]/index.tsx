@@ -11,7 +11,6 @@ export default function Index() {
   const [pageNumber, setPageNumber] = useGeneralService("commentsPage");
   const photo = useGeneralServiceValue("albumPhoto");
   const album = useGeneralServiceValue("album");
-  console.log("commentsState", PhotoID);
   useEffect(() => {
     if (PhotoID) {
       fetch(`https://jsonplaceholder.typicode.com/photos/${PhotoID}/comments`)
@@ -21,11 +20,11 @@ export default function Index() {
           setPageNumber(1);
         });
     }
-  }, []);
+  }, [PhotoID]);
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ padding: 5 }}>
         <Text>Album Title: {album.title}</Text>
         <Text>Album User ID: {album.userId}</Text>
         <Text>Photo Title: {photo.title}</Text>

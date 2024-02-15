@@ -40,7 +40,6 @@ export default function Index() {
           { label: "Title", width: 45 },
         ]}
         onCellClick={(item) => {
-          console.log(item);
           router.replace(`/(tabs)/albums/${item}`);
           setAlbum(albums.find((i) => i?.id === item) as Albums);
         }}
